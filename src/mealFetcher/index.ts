@@ -1,16 +1,27 @@
-import { fetcher } from "./fetcher";
+import { fetcher } from "../fetcher";
 import * as cherrio from "cheerio";
-import { IMeal } from "./types";
+import { IMeal, MealTypes, PrepTime } from "../types";
+import { getMealtype } from "./getMealtype";
+import { getPreptime } from "./getPreptime";
 
-export const fetchMeals = async (pagenumber: string) => {
+export const fetchMeals = async (
+  pagenumber: string,
+  mealType: MealTypes,
+  preptime: PrepTime,
+) => {
   let parsedPagenumber: number;
   if ((pagenumber && pagenumber != null) || pagenumber != undefined) {
     parsedPagenumber = parseInt(pagenumber);
   } else {
     parsedPagenumber = 0;
   }
+
+  // get parameter for search
+  const { mealTypeParam1, mealTypeParam2 } = getMealtype(mealType);
+  const prepTimeParam = getPreptime(preptime);
+
   const res = await fetcher(
-    `https://www.chefkoch.de/rs/s${parsedPagenumber}t21p30o3/vegan/Hauptspeise-Rezepte.html`,
+    `https://www.chefkoch.de/rs/s${parsedPagenumber}${mealTypeParam1}${prepTimeParam}o3/vegan/${mealTypeParam2}.html`,
   );
   const $ = cherrio.load(res);
 
@@ -32,6 +43,8 @@ export const fetchMeals = async (pagenumber: string) => {
       description,
       recipeLink,
     });
+
+    // limit output at 11 recipes
     if (index > 10) {
       return false;
     }

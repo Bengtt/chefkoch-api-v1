@@ -1,13 +1,17 @@
 import express from "express";
-import { fetchMeals } from "./index.js";
 import { getRecipe } from "./getRecipe.js";
+import { fetchMeals } from "./mealFetcher/index.js";
 
 const app = express();
 app.use(express.json());
 
 app.post("/fetch-meals", async (req, res) => {
   try {
-    const result = await fetchMeals(req.body.pagenumber);
+    const result = await fetchMeals(
+      req.body.pagenumber,
+      req.body.mealType,
+      req.body.preptime,
+    );
     res.json({ result });
   } catch (err) {
     const errorMessage =

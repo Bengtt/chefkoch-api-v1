@@ -1,2 +1,2 @@
-export * from "./fetchMeals";
+export * from "./mealFetcher/index";
 export * from "./fetcher";

@@ -26,3 +26,13 @@ export interface IMeal {
   description: string;
   recipeLink?: string;
 }
+
+export type MealTypes =
+  | "mainMeal"
+  | "appetizer"
+  | "dessert"
+  | "snack"
+  | "breakfast"
+  | "sidedish";
+
+export type PrepTime = "15" | "30" | "60" | "120" | null;
