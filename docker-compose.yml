@@ -1,0 +1,14 @@
+services:
+  chefkoch-api:
+    build: .
+    container_name: chefkoch-api
+    ports:
+      - ${PORT}
+    env_file:
+      - .env
+    # Networks only relevant for my project not for the API
+    networks:
+      - shared-net
+networks:
+  shared-net:
+    external: true
